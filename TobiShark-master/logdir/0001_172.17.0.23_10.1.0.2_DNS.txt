@@ -1,0 +1,35 @@
+
+===== Ethernet Header =====
+Source Address 02 42 AC 11 00 17 
+Destination Address :02 42 BB 72 94 39 
+
+===== IP Header =====
+ -Version :4 
+ -Internet Header Length(IHL) : 20 bits 
+ -Type Of Service :0 
+ -Total Length :55 Bytes 
+ -Identification :1821 
+ -Time To Live :64 
+ -Protocol :17 
+ -Header Checksum :32110 
+ -Source IP :172.17.0.23 
+ -Destination IP :10.1.0.2 
+===== UDP =====
+ -Source Port : 44314 
+ -Destination Port : 53 
+ -UDP Length : 35 
+ -Checksum  : 46687 
+===== DNS =====
+-Transaction ID :Ox5e1c 
+Flags : 1 
+Flags: Standard query 
+Questions : 1 
+Answer RRs : 0 
+Authority RRs : 0 
+Additional RRs : 0 
+===== DATA =====
+5e 01 00 00 01 00 00 00 00 00 00 05 6e 61 76 65 
+72 03 63 6f 6d 00 00 1c 00 01 
+===== CHAR DATA =====
+^...........nave
+r.com.....

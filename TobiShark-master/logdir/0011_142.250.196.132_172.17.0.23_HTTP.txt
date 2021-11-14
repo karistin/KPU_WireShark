@@ -1,0 +1,55 @@
+
+===== Ethernet Header =====
+Source Address 02 42 BB 72 94 39 
+Destination Address :02 42 AC 11 00 17 
+
+===== IP Header =====
+ -Version :4 
+ -Internet Header Length(IHL) : 20 bits 
+ -Type Of Service :0 
+ -Total Length :505 Bytes 
+ -Identification :7532 
+ -Time To Live :43 
+ -Protocol :6 
+ -Header Checksum :28908 
+ -Source IP :142.250.196.132 
+ -Destination IP :172.17.0.23 
+===== TCP =====
+ -Source Port : 80 
+ -Destination Port : 50368 
+ -Sequence Number : adb0b21b 
+ -Acknowldge Number : 641eddab 
+=====HTTP===== 
+
+Щ–ТЧ 
+===== CHAR DATA =====
+.........+.#5106
+0;&#48120;&#5164
+8;&#47196;.&#441
+60;&#49353;\x22,
+\x22srch\x22:\x2
+2Google.&#44160;
+&#49353;\x22.,\x
+22ovr\x22:..,\x2
+2pq\x22:\x22\x22
+,\x22refpd\x22:t
+rue,\x22refspre\
+x22:true,\x22rfs
+\x22:[],\x22sbas
+\x22:\x220.3px.8
+px.0.rgba(0,0,0,
+0.2),0.0.0.1px.r
+gba(0,0,0,0.08)\
+x22,\x22sbpl\x22
+:16,\x22sbpr\x22
+:16,\x22scd\x22:
+10,\x22stok\x22:
+\x2219ve15aS90Tm
+4yUVC7dFkiDGUyY\
+x22,\x22uhde\x22
+:false..';google
+.pmc=JSON.parse(
+pmc);.)();</scri
+pt>........</bod
+y></html>..0....
+

@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <netinet/udp.h>
-#include <netinet/tcp.h>
-#include <netinet/ip.h>
-#include <netinet/if_ether.h>
-#include <sys/socket.h>
+#include <netinet/udp.h> //udp 헤더
+#include <netinet/tcp.h> //tcp 헤더
+#include <netinet/ip.h> // ip 헤더
+#include <netinet/if_ether.h> // 10Mb/s 이더넷 헤더 구조
+#include <sys/socket.h> 
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <memory.h>
@@ -26,15 +26,18 @@
 #define BUFFER_SIZE 65536
 #define PATH_MAX 512
 
+// 포트번호 지정
 #define ICMP 1
 #define TCP 6
 #define UDP 17
 #define DNS 53
 #define HTTP 80
 
+// http 헤더 구조체
 typedef struct http_header{
 	unsigned char http_first[3000];
 }http_header;
+
 
 int rawsocket;
 int packet_num = 0;
@@ -66,6 +69,7 @@ void close_handler(void){
 	close(rawsocket);
 }
 
+// 로그 파일 관련 함수
 void log_eth(struct ethhdr *eth);
 void log_ip(struct iphdr *ip);
 void log_icmp(struct icmp *icmp, struct ih_idseq *ih_idseq);			//icmp_추가
@@ -82,12 +86,13 @@ void print_eth(struct ethhdr *eth);
 void print_menu();
 void tokenizer(char str[1024]);
 
-// 디렉터리 / 파일 관련 함수
+// 디렉터리 파일 관련 함수
 void make_logdir();
 void delete_logdir();
 void get_logdir();
 int rmdirs(const char *path, int force);
 int list_view(char *filters);
+
 // 선택 패킷의 도착지 주소를 패킷2로 저장한다.
 int associate_file(int ch, int flag){
 
@@ -96,7 +101,7 @@ int associate_file(int ch, int flag){
 		tokenizer(file_list[ch]);
 		printf("연관 필터 적용 : %s \n", file_token[1]);
 		strcpy(filter2 ,file_token[1]);
-		}
+	}
 	else{
 		printf("입력값 재확인  \n");
 	}
@@ -106,10 +111,10 @@ int associate_file(int ch, int flag){
 int file_select(const struct dirent *entry)
 {
 	char temp_filter[80] = "";
-	strcpy(temp_filter, entry->d_name);
+	strcpy(temp_filter, entry->d_name); // 파일 이름 복사
 
-	if(strstr(temp_filter, filter) && (strstr(temp_filter, filter2)))
-	{
+	// 파일 이름 내에서 필터 검색
+	if(strstr(temp_filter, filter) && (strstr(temp_filter, filter2))){
 		return 1;
 	}
 	else{
@@ -121,12 +126,13 @@ int file_select(const struct dirent *entry)
 void file_read(int ch)
 {
 	read_file = NULL;
-	char dir_path[120] = "./logdir/";
+	char dir_path[120] = "./logdir/";	// 로그 파일 디렉토리 지정
 	char path[120]; 
-	strcpy(path, file_list[ch]);
-	strcat(dir_path, path);
+	
+	strcpy(path, file_list[ch]);		// 파일 리스트 저장
+	strcat(dir_path, path);				// 로그 파일 디렉토리 갱신
 
-	read_file = fopen(dir_path,"r");
+	read_file = fopen(dir_path,"r");	// 로그 파일 오픈
 	printf("입력 확인 %d \n", ch);
 	printf("실행 파일  %s \n", dir_path);
 
@@ -135,6 +141,7 @@ void file_read(int ch)
 		char strTemp[4096];
 		char *pStr;
 
+		// 파일 읽고 출력
 		while( !feof(read_file))
 		{
 			pStr = fgets(strTemp, sizeof(strTemp), read_file);
@@ -149,6 +156,7 @@ void file_read(int ch)
 
 }
 
+// 패킷 선택
 void packetSelect(){
 	int input = 0;
 	printf("분석할  패킷의 프레임 번호 : ");
@@ -163,12 +171,13 @@ void packetSelect(){
 	file_read(input);
 }
 
+
 int main(int argc, char *argv[])
 {
 	int input, end_flag = 0;
 	socklen_t len;
 
-	while(!end_flag){
+	while(!end_flag){		// end_flag가 1이 될때까지
 
 		print_menu();
 		printf("\ninput : ");
@@ -176,11 +185,10 @@ int main(int argc, char *argv[])
 		int count = 0;
 	
 		switch(input){
-			case 1:
+			case 1:	// 패킷 핸들러 처리
 				packet_handler();
 				break;
-			case 2:
-				// file 출력 및 선택
+			case 2: // file 출력 및 선택
 				packet_analyze("");
 				list_view("");
 				break;
@@ -212,9 +220,7 @@ int main(int argc, char *argv[])
 				printf("Check your input\n");
 				break;
 		}
-
 	}
-
 	return 0;
 }
 
@@ -343,7 +349,7 @@ int packet_handler(){
 	memset(buffer, 0, BUFFER_SIZE);
 
 	int buflen=recvfrom(rawsocket, buffer, 65536, 0, &saddr, (socklen_t *)&saddr_len);
-	
+
 	if(buflen <0){
 		printf("error in reading recvfrom \n");
 		return 0;
@@ -503,7 +509,7 @@ int packet_handler(){
 	return 1;
 }
 
-
+// 패킷 분석 후 생성된 로그 파일 내용 분석
 int packet_analyze(char *filters){
 	struct dirent **namelist;
 	int plus = 0;
@@ -512,13 +518,13 @@ int packet_analyze(char *filters){
 
 	const char *path = "./logdir";
 
-	// NULL 로 변경, 얜 전체 다 매핑 시키는 용도로 쓸 꺼다. 
+	// NULL 로 변경, 전체 매핑 용도
 	if((count = scandir(path, &namelist, NULL, alphasort)) == -1){
 		fprintf(stderr, "%s direntory scan error\n", path);
 		return -1;
 	}
 
-	// .이나 ..을 계산에서 제외시키기 위함이다.
+	// 경로 계산시 .이나 ..을 계산에서 제외
 	if(strcmp(filter,"")==0 && strcmp(filter2,"")==0){
 		plus = 2;
 	}
@@ -526,8 +532,8 @@ int packet_analyze(char *filters){
 		plus = 2;
 	}
 
+	//파일의 이름 출력
 	for(idx = plus; idx < count; idx++){
-		//파일의 이름 출력
 		//printf("%s\n", namelist[idx]->d_name);
 		strcpy(file_list[idx - plus], namelist[idx]->d_name);
 	}
@@ -755,6 +761,7 @@ void print_menu(){
 	printf("7.exit \n");
 }
 
+// 문자열 분리
 void tokenizer(char str[1024]){
 	char temp[1024];
 	char *ptr;
