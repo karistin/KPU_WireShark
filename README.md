@@ -49,7 +49,7 @@ input :
 
 > 분석한 패킷은 http, dns, icmp프로토콜에 대해서 조사했다.  
 > 아래 예제는 icmp 패킷의 예이다.  
-> "./Document/구현결과.pptx"에서 자세히 설명했다.  
+> [./Document/구현결과.pptx](https://github.com/karistin/KPU_WireShark/blob/main/Document/%EA%B5%AC%ED%98%84%EA%B2%B0%EA%B3%BC.pptx)에서 자세히 설명했다.  
 
 ```bash
 ===== Ethernet Header =====
