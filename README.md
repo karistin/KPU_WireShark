@@ -53,34 +53,71 @@ input :
 
 ```bash
 ===== Ethernet Header =====
-Source Address 00 15 5D A3 AA AE 
-Destination Address :00 15 5D 4C 3E E4 
+Source Address 00 15 5D 4C 3E E4
+Destination Address :00 15 5D A3 A6 49
 
 ===== IP Header =====
- -Version :4 
- -Internet Header Length(IHL) : 20 bits 
- -Type Of Service :0 
- -Total Length :84 Bytes 
- -Identification :9257 
- -Time To Live :64 
- -Protocol :1 
- -Header Checksum :2472 
- -Source IP :172.18.94.196 
- -Destination IP :1.1.1.1 
-===== ICMP =====
--Type : 8 
--Code : 0 
--Checksum : Oxb8cd
--Identifier(LE) : Oxfe01 
--Sequence number(LE) : Ox8502 
-===== DATA =====
-15 16 17 18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 
-25 26 27 28 29 2a 2b 2c 2d 2e 2f 30 31 32 33 34 
-35 36 37 
+ -Version :4
+ -Internet Header Length(IHL) : 20 bits
+ -Type Of Service :0
+ -Total Length :438 Bytes
+ -Identification :52667
+ -Time To Live :56
+ -Protocol :6
+ -Header Checksum :26154
+ -Source IP :1.1.1.1
+ -Destination IP :172.18.95.72
+===== TCP =====
+ -Source Port : 80
+ -Destination Port : 59532
+ -Sequence Number : ae01efe
+ -Acknowldge Number : a244f147
+=====HTTP=====
+
+HTTP/1.1 301 Moved Permanently
+Server: cloudflare
+Date: Sun, 11 Dec 2022 12:10:53 GMT
+Content-Type: text/html
+Content-Length: 167
+Connection: keep-alive
+Location: https://1.1.1.1/
+CF-RAY: 777e1ea4a9c5c080-ICN
+
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>cloudflare</center>
+</body>
+</html>
+
 ===== CHAR DATA =====
-............."#$
-%&'()*+,-./01234
-567
+.......W...HTTP/
+1.1.301.Moved.Pe
+rmanently..Serve
+r:.cloudflare..D
+ate:.Sun,.11.Dec
+.2022.12:10:53.G
+MT..Content-Type
+:.text/html..Con
+tent-Length:.167
+..Connection:.ke
+ep-alive..Locati
+on:.https://1.1.
+1.1/..CF-RAY:.77
+7e1ea4a9c5c080-I
+CN....<html>..<h
+ead><title>301.M
+oved.Permanently
+</title></head>.
+.<body>..<center
+><h1>301.Moved.P
+ermanently</h1><
+/center>..<hr><c
+enter>cloudflare
+</center>..</bod
+y>..</html>..
+y>..</html>..
 ```
 
 > Ping 통신시 캡처링된 패킷의 예시  
